@@ -5,6 +5,14 @@
 #include <random>
 #include <cstring>
 
+#define RESET   "\033[0m"
+#define CERVENA   "\033[31m"
+#define MODRA    "\033[34m"
+#define ZELENA  "\033[0;32m"
+#define HNEDA   "\033[0;33m"
+#define ORANZOVA  "\033[38;5;208m"
+
+
 class Colors {
 
 
@@ -63,19 +71,19 @@ public:
     static void vypis_barvu(barva col) {
         switch (col) {
             case barva::modra :
-                std::cout << "MM";
+                std::cout<<MODRA<< "█ "<<RESET;
                 break;
             case barva::cervena :
-                std::cout << "CC";
+                std::cout <<CERVENA<< "█ "<<RESET;
                 break;
             case barva::hneda :
-                std::cout << "HH";
+                std::cout <<HNEDA<< "█ "<<RESET;
                 break;
             case barva::oranzova :
-                std::cout << "OO";
+                std::cout <<ORANZOVA<< "█ "<<RESET;
                 break;
             case barva::zelena :
-                std::cout << "ZZ";
+                std::cout <<ZELENA<< "█ "<<RESET;
                 break;
         }
     }
@@ -84,22 +92,34 @@ public:
 
 
     void vypis_plochu() {
-        std::cout<<"MM -> CC -> HH -> OO -> ZZ -> MM"<<"\n";
-        for (int k = 0; k < velikost+1; k++) {
+        std::cout<<MODRA<< "█ "<<RESET<< "->" <<CERVENA<< " █ " <<RESET<< "->"<<HNEDA<< " █ "<<RESET<< "->"<<ORANZOVA<< " █ "<<RESET<< "->"<<ZELENA<< " █ "<<RESET<< "->"<<MODRA<< " █ "<<RESET;
+        std::cout<<std::endl<<std::endl;
+//        -> HH -> OO -> ZZ -> MM"<<"\n";
+        std::cout<<"     ";
+        for (int k = 0; k < velikost; k++) {
+            std::cout << k+1<<". ";
+        }
+        std::cout<<std::endl;
+        std::cout<<"     ";
+        for (int k = 0; k < velikost; k++) {
             std::cout << "-- ";
         }
         std::cout << std::endl;
         for (int i = 0; i < velikost; ++i) {
+            std::cout<<i+1<<". ";
             std::cout<<"| ";
             for (int j = 0; j < velikost; ++j) {
                 vypis_barvu(plocha[i][j]);
                 std::cout << " ";
             }
             std::cout<<"|";
-
             std::cout << std::endl;
+            if(i!= velikost-1){
+            std::cout << std::endl;
+            }
         }
-        for (int k = 0; k < velikost+1; k++) {
+        std::cout<<"     ";
+        for (int k = 0; k < velikost; k++) {
             std::cout << "-- ";
         }
         std::cout << std::endl;
@@ -172,7 +192,8 @@ public:
     explicit GameHandler(Colors& colors) : colors(colors) {
         win= false;
         end= false;
-        std::cout<<"Vitejte ve hre Colors - cílem hry je mít na ploše pouze modré bloky"<<'\n';
+
+        std::cout<<'\n'<<"Vitejte ve hre Colors - cílem hry je mít na ploše pouze modré bloky"<<'\n'<<'\n';
     };
 
     void game_loop(){
