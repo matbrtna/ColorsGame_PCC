@@ -1,0 +1,3 @@
+/home/brtnamat/Desktop/FEL/3_semestr/C++/colors-for-kids-pcc/ColorsGame/cmake-build-debug/CMakeFiles/ColorsGame.dir
+/home/brtnamat/Desktop/FEL/3_semestr/C++/colors-for-kids-pcc/ColorsGame/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/brtnamat/Desktop/FEL/3_semestr/C++/colors-for-kids-pcc/ColorsGame/cmake-build-debug/CMakeFiles/rebuild_cache.dir
