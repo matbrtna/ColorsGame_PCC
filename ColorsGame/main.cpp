@@ -11,6 +11,9 @@
 #define ZELENA  "\033[0;32m"
 #define HNEDA   "\033[0;33m"
 #define ORANZOVA  "\033[38;5;208m"
+#define FIALOVA  "\033[0;35m"
+#define BILA  "\e[0;37m"
+#define RUZOVA    "\033[38;5;206m"
 
 
 class Colors {
@@ -21,14 +24,21 @@ private:
     enum class barva {
         modra,
         cervena,
-        hneda,
-        oranzova,
         zelena,
+        oranzova,
+        ruzova,
+        hneda,
+        fialova,
+        bila
     };
 
     std::vector<std::vector<barva>> plocha;
 
     int velikost;
+
+    int sadaBarev;
+
+    int modulo;
 
     static std::vector<std::vector<barva>> inicializace(int n) {
         std::vector<std::vector<barva>> tmp;
@@ -61,9 +71,21 @@ private:
 public:
 
 
-    explicit Colors(int n){
-        plocha= inicializace(n);
-        velikost=n;
+    explicit Colors(int i, int  colorset){
+        plocha= inicializace(i);
+        velikost=i;
+        sadaBarev=colorset;
+        switch (sadaBarev) {
+            default:
+                modulo=4;
+                break;
+            case 2:
+                modulo=6;
+                break;
+            case 3:
+                modulo=8;
+                break;
+        }
     }
 
     virtual ~Colors() = default;
@@ -85,6 +107,15 @@ public:
             case barva::zelena :
                 std::cout <<ZELENA<< "█ "<<RESET;
                 break;
+            case barva::fialova:
+                std::cout <<FIALOVA<< "█ "<<RESET;
+                break;
+            case barva::bila:
+                std::cout <<BILA<< "█ "<<RESET;
+                break;
+            case barva::ruzova:
+                std::cout <<RUZOVA<< "█ "<<RESET;
+                break;
         }
     }
 
@@ -92,9 +123,17 @@ public:
 
 
     void vypis_plochu() {
-        std::cout<<MODRA<< "█ "<<RESET<< "->" <<CERVENA<< " █ " <<RESET<< "->"<<HNEDA<< " █ "<<RESET<< "->"<<ORANZOVA<< " █ "<<RESET<< "->"<<ZELENA<< " █ "<<RESET<< "->"<<MODRA<< " █ "<<RESET;
+        if(sadaBarev==1){
+            std::cout<<MODRA<< "█ "<<RESET<< "->" <<CERVENA<< " █ " <<RESET<< "->"<<ZELENA<< " █ "<<RESET<< "->"<<ORANZOVA<< " █ "<<RESET;
+        } else if(sadaBarev==2){
+            std::cout<<MODRA<< "█ "<<RESET<< "->" <<CERVENA<< " █ " <<RESET<< "->"<<ZELENA<< " █ "<<RESET
+            << "->"<<ORANZOVA<< " █ "<<RESET<< "->"<<RUZOVA<< " █ "<<RESET<< "->"<<HNEDA<< " █ "<<RESET;
+        } else {
+            std::cout << MODRA << "█ " << RESET << "->" << CERVENA << " █ " << RESET << "->" << ZELENA << " █ " << RESET
+            << "->" << ORANZOVA << " █ " << RESET << "->" << RUZOVA << " █ " << RESET << "->" << HNEDA
+            << " █ " << RESET << "->" << FIALOVA << " █ " << RESET << "->" << BILA << " █ " << RESET;
+        }
         std::cout<<std::endl<<std::endl;
-//        -> HH -> OO -> ZZ -> MM"<<"\n";
         std::cout<<"     ";
         for (int k = 0; k < velikost; k++) {
             std::cout << k+1<<". ";
@@ -126,7 +165,7 @@ public:
     }
 
     void zmenit_barvu(barva &puvodni) {
-        puvodni = static_cast<barva> ((static_cast<int>(puvodni) + 1) % 5);
+        puvodni = static_cast<barva> ((static_cast<int>(puvodni) + 1) % modulo);
     }
 
     void rotace_radek(int radek) {
@@ -207,7 +246,11 @@ public:
             win=colors.zjistit_vyhru();
         }
         if(win) {
-            std::cout << "Vyhrál/a jste"<<std::endl;
+            std::cout<<std::endl;
+            colors.vypis_plochu();
+            std::cout<<std::endl;
+            std::cout << "Vyhrál/a jste!!!"<<std::endl;
+
         }
         if(end){
             std::cout<<"Ukončeno"<<std::endl;
@@ -298,8 +341,28 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
-    std::string userInput;
-    Colors barvy(4);
+    int gameSize = 4;
+    int colorset=2;
+
+    for(int i=1; i<argc; i++) {
+        if ((std::string) argv[i] == "-v") {
+            gameSize = atoi(argv[i + 1]);
+            if (gameSize != 4 && gameSize != 6 && gameSize != 8 && gameSize != 16) {
+                std::cout << "Špatně zadaná velikost plochy - povoleno je pouze 4, 6, 8 nebo 16";
+                std::cout<<std::endl;
+                return 0;
+            }
+        }
+        if ((std::string) argv[i] == "-b") {
+            colorset = atoi(argv[i + 1]);
+            if (colorset != 1 && colorset!= 2 && colorset!= 3) {
+                std::cout << "Špatně vybraná obtížnost - povoleny jsou jen obtížnosti 1, 2 a 3";
+                std::cout<<std::endl;
+                return 0;
+            }
+        }
+    }
+    Colors barvy(gameSize,colorset);
     barvy.zamichat_plochu();
     GameHandler hra=GameHandler(barvy);
     hra.game_loop();
