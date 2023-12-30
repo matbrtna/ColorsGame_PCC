@@ -285,25 +285,6 @@ public:
             } else{
                 std::cout<<"Tento čtverec nelze měnit"<<'\n';
             }
-//            std::cout<<"Který kvadrant chcete změnit?"<<'\n';
-//            int kvadrant;
-//            std::cin>>kvadrant;
-//            switch (kvadrant) {
-//                case 1:
-//                    colors.rotace_ctverec(0,colors.getVelikost()/2);
-//                    break;
-//                case 2:
-//                    colors.rotace_ctverec(0,0);
-//                    break;
-//                case 3:
-//                    colors.rotace_ctverec(colors.getVelikost(),0);
-//                    break;
-//                case 4:
-//                    colors.rotace_ctverec(colors.getVelikost(),colors.getVelikost());
-//                    break;
-//                default:
-//                    std::cout<<"Špatně vybraný kvadrant"<<std::endl;
-//            }
         }else if(tah=="q"){
             end= true;
             exit(0);
@@ -323,14 +304,19 @@ void napoveda(){
     std::cout << "Možnosti spuštění:" << std::endl;
     std::cout << "  --help     Vypísše nápovědu k tomuto programu" << std::endl;
     std::cout<< std::endl;
+    std::cout << "  -b    Upraví obtížnost změnou barev: 1 - Lehká, 2 - Střední, 3 - Těžká"  << std::endl;
+    std::cout<< std::endl;
+    std::cout << "  -v    Upraví velikost herního pole: 4 -  4x4, 6 - 6x6, 8 - 8x8, 16 - 16x16"  << std::endl;
+    std::cout<< std::endl;
+    std::cout << "Bez specifikace se hra spustí na střední obtížnost s velikostí 4x4." << std::endl;
+    std::cout<< std::endl;
     std::cout << "Pro ukočení zmáčkněte klávesu q a následně enter" << std::endl;
     std::cout<< std::endl;
     std::cout << "Pravidla hry:" << std::endl;
     std::cout << "Cílem hry je nastavit všechny čverce pole na modré" << std::endl;
     std::cout << "Hráč může měnit řádek, sloupec nebo kvadrant plochy" << std::endl;
     std::cout<< std::endl;
-    std::cout << "Barvy se cyklicky mění v pořadí:" << std::endl;
-    std::cout << "Modrá -> Červená -> Hnědá -> Oranžová -> Zelená -> Modrá" << std::endl;
+    std::cout << "Barvy se cyklicky mění na základě zvolené obtížnosti." << std::endl;
 
 }
 
