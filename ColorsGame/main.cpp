@@ -124,12 +124,12 @@ public:
 
     void vypis_plochu() {
         if(sadaBarev==1){
-            std::cout<<MODRA<< "█ "<<RESET<< "->" <<CERVENA<< " █ " <<RESET<< "->"<<ZELENA<< " █ "<<RESET<< "->"<<ORANZOVA<< " █ "<<RESET;
+            std::cout<<'\n'<<MODRA<< "█ "<<RESET<< "->" <<CERVENA<< " █ " <<RESET<< "->"<<ZELENA<< " █ "<<RESET<< "->"<<ORANZOVA<< " █ "<<RESET;
         } else if(sadaBarev==2){
-            std::cout<<MODRA<< "█ "<<RESET<< "->" <<CERVENA<< " █ " <<RESET<< "->"<<ZELENA<< " █ "<<RESET
+            std::cout<<'\n'<<MODRA<< "█ "<<RESET<< "->" <<CERVENA<< " █ " <<RESET<< "->"<<ZELENA<< " █ "<<RESET
             << "->"<<ORANZOVA<< " █ "<<RESET<< "->"<<RUZOVA<< " █ "<<RESET<< "->"<<HNEDA<< " █ "<<RESET;
         } else {
-            std::cout << MODRA << "█ " << RESET << "->" << CERVENA << " █ " << RESET << "->" << ZELENA << " █ " << RESET
+            std::cout <<'\n'<< MODRA << "█ " << RESET << "->" << CERVENA << " █ " << RESET << "->" << ZELENA << " █ " << RESET
             << "->" << ORANZOVA << " █ " << RESET << "->" << RUZOVA << " █ " << RESET << "->" << HNEDA
             << " █ " << RESET << "->" << FIALOVA << " █ " << RESET << "->" << BILA << " █ " << RESET;
         }
@@ -257,39 +257,49 @@ public:
         }
     }
 
-    void click_handle(std::string tah){
-        if(tah=="1"){
-            std::cout<<"Který sloupec chcete změnit?"<<'\n';
-            int sloupec;
-            std::cin>>sloupec;
-            if(sloupec<colors.getVelikost()+1) {
-                colors.rotace_sloupec(sloupec-1);
+    void click_handle(const std::string& tah){
+        try{
+            if(tah=="1"){
+                std::cout<<'\n'<<"Který sloupec chcete změnit?"<<'\n';
+                std::string vstup;
+                int sloupec;
+                std::cin>>vstup;
+
+                sloupec=std::stoi(vstup);
+                if(sloupec<colors.getVelikost()+1) {
+                    colors.rotace_sloupec(sloupec-1);
+                }
+
+            }else if(tah=="2"){
+                std::cout<<'\n'<<"Který řádek chcete změnit?"<<'\n';
+                int radek;
+                std::cin>>radek;
+                if(radek<colors.getVelikost()+1) {
+                    colors.rotace_radek(radek-1);
+                }
+            }else if(tah=="3"){
+                std::cout<<'\n'<<"Který čtverec chcete změnit? (napište indexy levého horního rohu)"<<'\n';
+                int ctverec_radek;
+                int ctverec_sloupec;
+                std::cout<<"Index řádku: "<<'\n';
+                std::cin>>ctverec_radek;
+                std::cout<<"Index sloupce: "<<'\n';
+                std::cin>>ctverec_sloupec;
+                if(ctverec_radek<colors.getVelikost()+1 && ctverec_sloupec<colors.getVelikost()+1 && (ctverec_radek-1)%2==0 && (ctverec_sloupec-1)%2==0) {
+                    colors.rotace_ctverec(ctverec_radek-1,ctverec_sloupec-1);
+                } else{
+                    std::cout<<"Tento čtverec nelze měnit"<<'\n';
+                }
+            }else if(tah=="q"){
+                end= true;
+                exit(0);
+            }else{
+                std::cout<<"Špatně zvolená akce"<<'\n';
             }
-        }else if(tah=="2"){
-            std::cout<<"Který řádek chcete změnit?"<<'\n';
-            int radek;
-            std::cin>>radek;
-            if(radek<colors.getVelikost()+1) {
-                colors.rotace_radek(radek-1);
-            }
-        }else if(tah=="3"){
-            std::cout<<"Který čtverec chcete změnit? (napište indexy levého horního rohu)"<<'\n';
-            int ctverec_radek;
-            int ctverec_sloupec;
-            std::cout<<"Index řádku: "<<'\n';
-            std::cin>>ctverec_radek;
-            std::cout<<"Index sloupceš: "<<'\n';
-            std::cin>>ctverec_sloupec;
-            if(ctverec_radek<colors.getVelikost()+1 && ctverec_sloupec<colors.getVelikost()+1 && (ctverec_radek-1)%2==0 && (ctverec_sloupec-1)%2==0) {
-                colors.rotace_ctverec(ctverec_radek-1,ctverec_sloupec-1);
-            } else{
-                std::cout<<"Tento čtverec nelze měnit"<<'\n';
-            }
-        }else if(tah=="q"){
-            end= true;
-            exit(0);
-        }else{
-            std::cout<<"Špatně zvolená akce"<<'\n';
+        }catch (std::invalid_argument){
+            std::cout<<"Špatný argument"<<'\n';
+        }catch(std::out_of_range){
+            std::cout<<"Moc dlouhý argument"<<'\n'<<'\n';
         }
     }
 
