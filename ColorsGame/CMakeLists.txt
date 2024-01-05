@@ -3,4 +3,6 @@ project(ColorsGame)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(ColorsGame main.cpp)
+add_executable(ColorsGame main.cpp
+        Game.cpp
+        Game.cpp)
